@@ -9,13 +9,22 @@ from datetime import datetime
 logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Check and install necessary dependencies
+def install_dependency(package_name):
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+
 try:
     from PIL import Image
 except ImportError:
-    import sys
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+    install_dependency("Pillow")
     from PIL import Image
+
+try:
+    from tqdm import tqdm
+except ImportError:
+    install_dependency("tqdm")
+    from tqdm import tqdm
+
 
 def get_creation_date(file_path):
     try:
@@ -82,10 +91,13 @@ def move_file_based_on_date(file_path, dest_dir, counters):
 
 def sort_media(source_dir, dest_dir):
     counters = {"moved": 0, "unsorted": 0}
-    for root, dirs, files in os.walk(source_dir):
-        for file in files:
-            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.mp4', '.mov', '.avi', '.mkv', '.heic', '.3gp', '.dng', '.m4v')):
-                move_file_based_on_date(os.path.join(root, file), dest_dir, counters)
+    
+    # Get a list of all files first for tqdm
+    all_files = [os.path.join(root, file) for root, dirs, files in os.walk(source_dir) for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.mp4', '.mov', '.avi', '.mkv', '.heic', '.3gp', '.dng', '.m4v'))]
+    
+    for file_path in tqdm(all_files, desc="Sorting media", unit="file"):
+        move_file_based_on_date(file_path, dest_dir, counters)
+    
     return counters
 
 if __name__ == "__main__":
