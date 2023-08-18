@@ -46,7 +46,8 @@ def move_file_based_on_date(file_path, dest_dir):
     else:
         date_from_filename = extract_date_from_filename(os.path.basename(file_path))
         if date_from_filename:
-            year_month_dir = os.path.join(dest_dir, str(date_from_filename.year), "nodata")
+            month_name = date_from_filename.strftime('%B')
+            year_month_dir = os.path.join(dest_dir, "sorted", str(date_from_filename.year), f"{date_from_filename.month:02} - {month_name}", "filename-dated")
         else:
             year_month_dir = os.path.join(dest_dir, "unsorted")
     
