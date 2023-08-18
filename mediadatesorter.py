@@ -34,8 +34,8 @@ def get_creation_date(file_path):
 def extract_date_from_filename(filename):
     # List of known prefixes that shouldn't be interpreted as dates
     non_date_prefixes = [
-        "FB_IMG_", "Snapchat-", "IMG-WA", "VID-WA", "Instagram-", "Twitter-", 
-        "IMG_", "VID_", "Screenshot_", "WIN_", "MVIMG_", "PANO_", "BURST_", 
+        "FB_IMG_", "Snapchat-", "IMG-WA", "VID-WA", "Instagram-", "Twitter-",
+        "Screenshot_", "WIN_", "MVIMG_", "PANO_", "BURST_", 
         "SM_", "Screen Shot", "Skype-", "Zoom-", "PhotoCollage_", "Collage_", 
         "Clip_", "Export_", "Download_", "Edited_"
     ]
