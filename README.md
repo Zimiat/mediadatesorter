@@ -11,7 +11,7 @@ I created MediaDateSorter after downloading my Google Photos and OneDrive collec
 ## Usage
 1. Download `MediaDateSorter.py`.
 2. Place it in the directory with the media files.
-3. Run: `python MediaDateSorter.py`.
+3. Run: `python mediadatesorter.py`.
 4. Follow the prompt.
 
 ## License
