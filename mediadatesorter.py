@@ -36,15 +36,14 @@ def move_file_based_on_date(file_path, dest_dir):
     
     shutil.move(file_path, os.path.join(year_month_dir, os.path.basename(file_path)))
 
-def sort_media(source_dir, dest_dir):
+def sort_media(source_dir):
     for root, dirs, files in os.walk(source_dir):
         for file in files:
-            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.mp4', '.mov', '.avi', '.mkv')):
-                move_file_based_on_date(os.path.join(root, file), dest_dir)
+            if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.mp4', '.mov', '.avi', '.mkv', '.heic', '.3gp', '.dng', '.m4v')):
+                move_file_based_on_date(os.path.join(root, file), ".")
 
 if __name__ == "__main__":
     source_directory = input("Enter the source directory path: ")
-    destination_directory = input("Enter the destination directory path: ")
 
-    sort_media(source_directory, destination_directory)
+    sort_media(source_directory)
     print("Sorting and moving completed!")
