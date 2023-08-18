@@ -32,15 +32,32 @@ def get_creation_date(file_path):
     return None
 
 def extract_date_from_filename(filename):
+    # List of known prefixes that shouldn't be interpreted as dates
+    non_date_prefixes = [
+        "FB_IMG_", "Snapchat-", "IMG-WA", "VID-WA", "Instagram-", "Twitter-",
+        "Screenshot_", "WIN_", "MVIMG_", "PANO_", "BURST_", 
+        "SM_", "Screen Shot", "Skype-", "Zoom-", "PhotoCollage_", "Collage_", 
+        "Clip_", "Export_", "Download_", "Edited_"
+    ]
+    
+    # Check if filename starts with any of the known prefixes
+    if any(filename.startswith(prefix) for prefix in non_date_prefixes):
+        return None
+
     # Check if the filename matches the YYYYMMDD pattern
     match = re.search(r'(\d{4})(\d{2})(\d{2})', filename)
     if match:
         year, month, day = match.groups()
         try:
-            return datetime(int(year), int(month), int(day))
+            date_obj = datetime(int(year), int(month), int(day))
+            # Validate the year is within a reasonable range
+            current_year = datetime.now().year
+            if 1900 <= date_obj.year <= current_year:
+                return date_obj
         except ValueError:
             return None
     return None
+
 
 def move_file_based_on_date(file_path, dest_dir, counters):
     date = get_creation_date(file_path)
