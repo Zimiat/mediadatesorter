@@ -3,6 +3,14 @@ import shutil
 from PIL import Image
 from datetime import datetime
 
+# Check and install necessary dependencies
+try:
+    from PIL import Image
+except ImportError:
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+    from PIL import Image
+
 def get_creation_date(file_path):
     try:
         # Try to get the creation date from the image metadata
