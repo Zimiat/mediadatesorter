@@ -2,6 +2,7 @@ import os
 import shutil
 import re
 import logging
+import sys
 from PIL import Image
 from datetime import datetime
 
