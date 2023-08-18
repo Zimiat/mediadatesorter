@@ -29,7 +29,8 @@ def move_file_based_on_date(file_path, dest_dir):
     date = get_creation_date(file_path)
     
     if date:
-        year_month_dir = os.path.join(dest_dir, "sorted", str(date.year), str(date.month).zfill(2))
+        month_name = date.strftime('%B')
+        year_month_dir = os.path.join(dest_dir, "sorted", str(date.year), f"{date.month:02} - {month_name}")
     else:
         year_month_dir = os.path.join(dest_dir, "unsorted")
     
