@@ -21,8 +21,19 @@ def get_creation_date(file_path):
             date_str = info[36867]
             return datetime.strptime(date_str, '%Y:%m:%d %H:%M:%S')
     except Exception as e:
-        return None
+        pass
 
+    return None
+
+def extract_date_from_filename(filename):
+    # Check if the filename matches the YYYYMMDD pattern
+    match = re.search(r'(\d{4})(\d{2})(\d{2})', filename)
+    if match:
+        year, month, day = match.groups()
+        try:
+            return datetime(int(year), int(month), int(day))
+        except ValueError:
+            return None
     return None
 
 def move_file_based_on_date(file_path, dest_dir):
@@ -32,7 +43,11 @@ def move_file_based_on_date(file_path, dest_dir):
         month_name = date.strftime('%B')
         year_month_dir = os.path.join(dest_dir, "sorted", str(date.year), f"{date.month:02} - {month_name}")
     else:
-        year_month_dir = os.path.join(dest_dir, "unsorted")
+        date_from_filename = extract_date_from_filename(os.path.basename(file_path))
+        if date_from_filename:
+            year_month_dir = os.path.join(dest_dir, str(date_from_filename.year), "nodata")
+        else:
+            year_month_dir = os.path.join(dest_dir, "unsorted")
     
     if not os.path.exists(year_month_dir):
         os.makedirs(year_month_dir)
