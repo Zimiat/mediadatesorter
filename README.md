@@ -9,7 +9,7 @@ I created MediaDateSorter after downloading my Google Photos and OneDrive collec
 - Supports formats: `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`, `.mp4`, `.mov`, `.avi`, `.mkv`, `.heic`, `.3gp`, `.dng`, `.m4v`.
 
 ## Usage
-1. Download `MediaDateSorter.py`.
+1. Download `mediadatesorter.py`.
 2. Place it in the directory with the media files.
 3. Run: `python mediadatesorter.py`.
 4. Follow the prompt.
