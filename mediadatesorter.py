@@ -29,7 +29,7 @@ def get_creation_date(file_path):
 
 def move_file_based_on_date(file_path, dest_dir):
     date = get_creation_date(file_path)
-    year_month_dir = os.path.join(dest_dir, str(date.year), str(date.month).zfill(2))
+    year_month_dir = os.path.join(dest_dir, "sorted", str(date.year), str(date.month).zfill(2))
     
     if not os.path.exists(year_month_dir):
         os.makedirs(year_month_dir)
