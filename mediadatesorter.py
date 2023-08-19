@@ -5,8 +5,8 @@ import logging
 import sys
 from datetime import datetime
 
-# Initialize logging
-logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def initialize_logging():
+    logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Function to check if the script is running with administrative privileges
 def is_admin():
@@ -23,7 +23,7 @@ def install_dependency(package_name):
 if not is_admin():
     print("This script requires administrative privileges to install dependencies.")
     sys.exit(1)
-    
+
 try:
     from PIL import Image
 except ImportError:
@@ -112,6 +112,7 @@ def sort_media(source_dir, dest_dir):
     return counters
 
 if __name__ == "__main__":
+    initialize_logging()
     source_directory = input("Enter the source directory path: ")
     destination_directory = "."  # Assuming current directory as the destination
 
