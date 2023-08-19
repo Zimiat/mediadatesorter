@@ -3,6 +3,7 @@ import shutil
 import re
 import logging
 import sys
+import ctypes
 from datetime import datetime
 
 def initialize_logging():
