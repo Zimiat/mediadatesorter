@@ -112,8 +112,14 @@ def sort_media(source_dir, dest_dir):
     
     return counters
 
+def check_free_space(dest_dir, required_space):
+    s = os.statvfs(dest_dir)
+    free_space = s.f_bavail * s.f_frsize
+    return free_space > required_space
+
 if __name__ == "__main__":
     initialize_logging()
+    
     source_directory = input("Enter the source directory path: ")
     destination_directory = "."  # Assuming current directory as the destination
 
@@ -121,7 +127,15 @@ if __name__ == "__main__":
     if not os.path.isdir(source_directory):
         print(f"Error: {source_directory} is not a valid directory.")
         sys.exit(1)
-        
+    
+    # Calculate required space - this is a rough estimate, for example based on the size of source files
+    total_size = sum(os.path.getsize(os.path.join(root, file)) for root, _, files in os.walk(source_directory) for file in files)
+    
+    # Check for free space in the destination directory
+    if not check_free_space(destination_directory, total_size):
+        print(f"Error: Not enough free space in the destination directory.")
+        sys.exit(1)
+
     results = sort_media(source_directory, destination_directory)
     print(f"Sorting and moving completed! {results['moved']} files moved. {results['unsorted']} files couldn't be sorted.")
     logging.info(f"{results['moved']} files moved. {results['unsorted']} files couldn't be sorted.")
