@@ -117,6 +117,11 @@ if __name__ == "__main__":
     source_directory = input("Enter the source directory path: ")
     destination_directory = "."  # Assuming current directory as the destination
 
+    # Validate the source directory
+    if not os.path.isdir(source_directory):
+        print(f"Error: {source_directory} is not a valid directory.")
+        sys.exit(1)
+        
     results = sort_media(source_directory, destination_directory)
     print(f"Sorting and moving completed! {results['moved']} files moved. {results['unsorted']} files couldn't be sorted.")
     logging.info(f"{results['moved']} files moved. {results['unsorted']} files couldn't be sorted.")
