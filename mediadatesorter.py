@@ -8,11 +8,22 @@ from datetime import datetime
 # Initialize logging
 logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Function to check if the script is running with administrative privileges
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
 # Check and install necessary dependencies
 def install_dependency(package_name):
     import subprocess
     subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
 
+if not is_admin():
+    print("This script requires administrative privileges to install dependencies.")
+    sys.exit(1)
+    
 try:
     from PIL import Image
 except ImportError:
