@@ -7,7 +7,7 @@
 - **Date Extraction**: Utilizes embedded metadata or filenames with a `YYYYMMDD` pattern.
 - **Automatic Dependency Handling**: Installs missing libraries as needed.
 - **Logging**: Generates `media_sorter.log` for action tracking and troubleshooting.
-- **File Support**: Recognizes a multitude of formats such as `.png`, `.jpg`, `.jpeg`, and more.
+- **Supports formats**: `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`, `.mp4`, `.mov`, `.avi`, `.mkv`, `.heic`, `.3gp`, `.dng`, `.m4v`.
 - **Fallback**: Files without clear dates are safely placed in an "unsorted" directory.
 
 ## Dependencies

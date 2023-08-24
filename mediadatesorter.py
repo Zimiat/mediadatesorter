@@ -79,7 +79,6 @@ def extract_date_from_filename(filename):
             return None
     return None
 
-
 def move_file_based_on_date(file_path, dest_dir, counters):
     date = get_creation_date(file_path)
     
