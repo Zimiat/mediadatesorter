@@ -3,15 +3,27 @@ import shutil
 import re
 import logging
 import sys
+import ctypes
 from datetime import datetime
 
-# Initialize logging
-logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+def initialize_logging():
+    logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Function to check if the script is running with administrative privileges
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
 
 # Check and install necessary dependencies
 def install_dependency(package_name):
     import subprocess
     subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+
+if not is_admin():
+    print("This script requires administrative privileges to install dependencies.")
+    sys.exit(1)
 
 try:
     from PIL import Image
@@ -67,7 +79,6 @@ def extract_date_from_filename(filename):
             return None
     return None
 
-
 def move_file_based_on_date(file_path, dest_dir, counters):
     date = get_creation_date(file_path)
     
@@ -100,9 +111,29 @@ def sort_media(source_dir, dest_dir):
     
     return counters
 
+def check_free_space(dest_dir, required_space):
+    s = os.statvfs(dest_dir)
+    free_space = s.f_bavail * s.f_frsize
+    return free_space > required_space
+
 if __name__ == "__main__":
+    initialize_logging()
+    
     source_directory = input("Enter the source directory path: ")
     destination_directory = "."  # Assuming current directory as the destination
+
+    # Validate the source directory
+    if not os.path.isdir(source_directory):
+        print(f"Error: {source_directory} is not a valid directory.")
+        sys.exit(1)
+    
+    # Calculate required space - this is a rough estimate, for example based on the size of source files
+    total_size = sum(os.path.getsize(os.path.join(root, file)) for root, _, files in os.walk(source_directory) for file in files)
+    
+    # Check for free space in the destination directory
+    if not check_free_space(destination_directory, total_size):
+        print(f"Error: Not enough free space in the destination directory.")
+        sys.exit(1)
 
     results = sort_media(source_directory, destination_directory)
     print(f"Sorting and moving completed! {results['moved']} files moved. {results['unsorted']} files couldn't be sorted.")
