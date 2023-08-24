@@ -112,9 +112,8 @@ def sort_media(source_dir, dest_dir):
     return counters
 
 def check_free_space(dest_dir, required_space):
-    s = os.statvfs(dest_dir)
-    free_space = s.f_bavail * s.f_frsize
-    return free_space > required_space
+    total, used, free = shutil.disk_usage(dest_dir)
+    return free > required_space
 
 if __name__ == "__main__":
     initialize_logging()
