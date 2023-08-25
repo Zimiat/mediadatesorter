@@ -27,9 +27,9 @@
 2. Change to your media directory.
 3. Run:
    ```
-   python mediadatesorter.py
+   python mediadatesorter.py -s SOURCE_DIRECTORY -d DESTINATION_DIRECTORY
    ```
-4. Follow the instructions on the screen.
+Or simply follow the instructions on the screen if you choose to run without arguments.
 
 ## Important Notes
 
