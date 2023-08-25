@@ -125,8 +125,8 @@ if __name__ == "__main__":
     initialize_logging()
     
     args = parse_arguments()
-    source_directory = input("Enter the source directory path: ")
-    destination_directory = "."  # Assuming current directory as the destination
+    source_directory = args.source if args.source else input("Enter the source directory path: ")
+    destination_directory = args.destination if args.destination else "."  # Assuming current directory as the destination
 
     # Validate the source directory
     if not os.path.isdir(source_directory):
