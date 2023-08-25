@@ -5,6 +5,9 @@ import logging
 import sys
 import ctypes
 import argparse
+import os
+import platform
+import ctypes
 from datetime import datetime
 
 DEPENDENCIES = {
@@ -17,9 +20,14 @@ def initialize_logging():
 
 # Function to check if the script is running with administrative privileges
 def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
+    if platform.system() == "Windows":
+        try:
+            return os.geteuid() == 0
+        except AttributeError:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+    elif platform.system() == "Linux" or platform.system() == "Darwin":
+        return os.geteuid() == 0
+    else:
         return False
 
 def are_dependencies_installed(dependencies):
