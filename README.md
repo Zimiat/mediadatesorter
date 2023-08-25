@@ -49,7 +49,27 @@ Files starting with the following prefixes won't have their dates extracted:
 
 - FB_IMG_
 - Snapchat-
-... [etc]
+- IMG-WA
+- VID-WA
+- Instagram-
+- Twitter-
+- Screenshot_
+- WIN_
+- MVIMG_
+- PANO_
+- BURST_
+- SM_
+- Screen Shot
+- Skype-
+- Zoom-
+- PhotoCollage_
+- Collage_
+- Clip_
+- Export_
+- Download_
+- Edited_
+
+These prefixes are defined within the script, and you may modify them to suit your specific use case.
 
 ## Logging
 
