@@ -7,6 +7,11 @@ import ctypes
 import argparse
 from datetime import datetime
 
+DEPENDENCIES = {
+    "Pillow": "PIL",  # Package name: Import name
+    "tqdm": "tqdm"
+}
+
 def initialize_logging():
     logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -18,25 +23,24 @@ def is_admin():
         return False
 
 # Check and install necessary dependencies
-def install_dependency(package_name):
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+def install_dependencies(dependencies):
+    for package_name in dependencies.keys():
+        try:
+            import importlib
+            importlib.import_module(dependencies[package_name])
+        except ImportError:
+            import subprocess
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            print(f"{package_name} has been installed.")
 
 if not is_admin():
     print("This script requires administrative privileges to install dependencies.")
     sys.exit(1)
 
-try:
-    from PIL import Image
-except ImportError:
-    install_dependency("Pillow")
-    from PIL import Image
+install_dependencies(DEPENDENCIES)
 
-try:
-    from tqdm import tqdm
-except ImportError:
-    install_dependency("tqdm")
-    from tqdm import tqdm
+from PIL import Image
+from tqdm import tqdm
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Sort and organize media files")
