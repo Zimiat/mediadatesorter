@@ -22,6 +22,15 @@ def is_admin():
     except:
         return False
 
+def are_dependencies_installed(dependencies):
+    for package_name in dependencies.keys():
+        try:
+            import importlib
+            importlib.import_module(dependencies[package_name])
+        except ImportError:
+            return False
+    return True
+
 # Check and install necessary dependencies
 def install_dependencies(dependencies):
     for package_name in dependencies.keys():
@@ -33,11 +42,11 @@ def install_dependencies(dependencies):
             subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
             print(f"{package_name} has been installed.")
 
-if not is_admin():
-    print("This script requires administrative privileges to install dependencies.")
-    sys.exit(1)
-
-install_dependencies(DEPENDENCIES)
+if not are_dependencies_installed(DEPENDENCIES):
+    if not is_admin():
+        print("This script requires administrative privileges to install dependencies.")
+        sys.exit(1)
+    install_dependencies(DEPENDENCIES)
 
 from PIL import Image
 from tqdm import tqdm
