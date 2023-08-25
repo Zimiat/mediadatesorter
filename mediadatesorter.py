@@ -4,7 +4,13 @@ import re
 import logging
 import sys
 import ctypes
+import argparse
 from datetime import datetime
+
+DEPENDENCIES = {
+    "Pillow": "PIL",  # Package name: Import name
+    "tqdm": "tqdm"
+}
 
 def initialize_logging():
     logging.basicConfig(filename='media_sorter.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -16,27 +22,40 @@ def is_admin():
     except:
         return False
 
+def are_dependencies_installed(dependencies):
+    for package_name in dependencies.keys():
+        try:
+            import importlib
+            importlib.import_module(dependencies[package_name])
+        except ImportError:
+            return False
+    return True
+
 # Check and install necessary dependencies
-def install_dependency(package_name):
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+def install_dependencies(dependencies):
+    for package_name in dependencies.keys():
+        try:
+            import importlib
+            importlib.import_module(dependencies[package_name])
+        except ImportError:
+            import subprocess
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            print(f"{package_name} has been installed.")
 
-if not is_admin():
-    print("This script requires administrative privileges to install dependencies.")
-    sys.exit(1)
+if not are_dependencies_installed(DEPENDENCIES):
+    if not is_admin():
+        print("This script requires administrative privileges to install dependencies.")
+        sys.exit(1)
+    install_dependencies(DEPENDENCIES)
 
-try:
-    from PIL import Image
-except ImportError:
-    install_dependency("Pillow")
-    from PIL import Image
+from PIL import Image
+from tqdm import tqdm
 
-try:
-    from tqdm import tqdm
-except ImportError:
-    install_dependency("tqdm")
-    from tqdm import tqdm
-
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Sort and organize media files")
+    parser.add_argument("-s", "--source", help="Path to the source directory", required=False)
+    parser.add_argument("-d", "--destination", help="Path to the destination directory", required=False)
+    return parser.parse_args()
 
 def get_creation_date(file_path):
     try:
@@ -118,8 +137,9 @@ def check_free_space(dest_dir, required_space):
 if __name__ == "__main__":
     initialize_logging()
     
-    source_directory = input("Enter the source directory path: ")
-    destination_directory = "."  # Assuming current directory as the destination
+    args = parse_arguments()
+    source_directory = args.source if args.source else input("Enter the source directory path: ")
+    destination_directory = args.destination if args.destination else "."  # Assuming current directory as the destination
 
     # Validate the source directory
     if not os.path.isdir(source_directory):
