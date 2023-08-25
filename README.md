@@ -25,11 +25,17 @@
 
 1. Either download or clone the repo to obtain `mediadatesorter.py`.
 2. Change to your media directory.
-3. Run:
-   ```
-   python mediadatesorter.py -s SOURCE_DIRECTORY -d DESTINATION_DIRECTORY
-   ```
-Or simply follow the instructions on the screen if you choose to run without arguments.
+3. You have two options to run the script:
+   - Using command-line arguments to specify source and destination directories:
+     ```
+     python mediadatesorter.py -s SOURCE_DIRECTORY -d DESTINATION_DIRECTORY
+     ```
+   - Running the script without arguments, and then follow the instructions on the screen to input the source and destination directories:
+     ```
+     python mediadatesorter.py
+     ```
+
+Please replace `SOURCE_DIRECTORY` and `DESTINATION_DIRECTORY` with your actual paths when using command-line arguments.
 
 ## Important Notes
 
