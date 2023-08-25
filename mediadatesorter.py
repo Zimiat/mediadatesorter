@@ -5,9 +5,7 @@ import logging
 import sys
 import ctypes
 import argparse
-import os
 import platform
-import ctypes
 from datetime import datetime
 
 DEPENDENCIES = {
