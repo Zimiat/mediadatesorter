@@ -4,6 +4,7 @@ import re
 import logging
 import sys
 import ctypes
+import argparse
 from datetime import datetime
 
 def initialize_logging():
@@ -37,6 +38,11 @@ except ImportError:
     install_dependency("tqdm")
     from tqdm import tqdm
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Sort and organize media files")
+    parser.add_argument("-s", "--source", help="Path to the source directory", required=False)
+    parser.add_argument("-d", "--destination", help="Path to the destination directory", required=False)
+    return parser.parse_args()
 
 def get_creation_date(file_path):
     try:
@@ -118,6 +124,7 @@ def check_free_space(dest_dir, required_space):
 if __name__ == "__main__":
     initialize_logging()
     
+    args = parse_arguments()
     source_directory = input("Enter the source directory path: ")
     destination_directory = "."  # Assuming current directory as the destination
 
